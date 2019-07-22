@@ -1,0 +1,104 @@
+<h1><%= @maily_email.name.humanize %></h1>
+<% if @maily_email.description.present? %>
+  <% @summarize = @maily_email.description.delete(:summarize)%>
+  <% @notes = @maily_email.description.delete(:notes)%>
+  <table cellpadding="10" class="description-table">
+    <% if @summarize.present? %>
+      <tr>
+        <td colspan="2" class="mail-summarize"><%= format_description_value(@summarize) %></td>
+      </tr>
+    <% end %>
+    <% @maily_email.description.each do |key, value| %>
+      <% if value.present? %>
+      <tr>
+        <td width="150px" style="font-weight: bold;" class="description-label"><%= key.to_s.humanize %></td>
+        <td class="description-value"><%= format_description_value(value) %></td>
+      </tr>
+      <% end %>
+    <% end %>
+
+    <% ['subject', 'from', 'reply_to'].each do |fiels_name| %>
+      <% if @email.try(fiels_name).present? || @maily_email.description[fiels_name].present?%>
+        <tr>
+          <td width="150px" style="font-weight: bold;" class="description-label"><%= fiels_name.to_s.humanize %></td>
+          <td class="description-value"><%= @maily_email.description[fiels_name].present? ? format_description_value(@maily_email.description[fiels_name])  : format_description_value(@email[fiels_name]) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% if @notes.present? %>
+    <tr>
+      <td colspan="2" class="mail-notes">* <%= format_description_value(@notes) %></td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<ul class="action_bar">
+  <% if Maily.allow_edition %>
+    <li>
+      <%= link_to 'Edit', edit_maily_email_path(mailer: params[:mailer], email: params[:email], part: params[:part]) %>
+    </li>
+  <% end %>
+
+  <li class="languages">
+    <% if Maily.available_locales.present? %>
+      <ul>
+        <li>
+          <%= icon 'globe' %> Languages
+        </li>
+        <% Maily.available_locales.each do |locale| %>
+          <li><%= link_to locale.upcase, url_for(params.to_unsafe_h.merge(locale: locale)) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </li>
+
+  <% if Maily.allow_edition && Maily.allow_delivery %>
+    <li class="splitter">|</li>
+  <% end %>
+
+  <% if Maily.allow_delivery %>
+    <li>
+      <%= form_tag(deliver_maily_email_path(mailer: params[:mailer], email: params[:email], locale: params[:locale]), method: :post, class: 'mail_deliver') do %>
+        <ul>
+          <li>Send to</li>
+          <li><%= email_field_tag :to, nil, placeholder: "Enter email", required: true %></li>
+          <li><%= submit_tag 'Send', class: 'button' %></li>
+        </ul>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<div class="mail_preview">
+  <% if @maily_email.no_preview %>
+    <div class="no-preview">Preveiw is not available.</div>
+  <% else %>
+    <% if @email.html_part && @email.text_part %>
+      <ul class="format_mail">
+        <li><%= link_to 'HTML', url_for(params.to_unsafe_h.merge(part: 'html')), class: part_class('html') %></li>
+        <li><%= link_to 'TEXT', url_for(params.to_unsafe_h.merge(part: 'text')), class: part_class('text') %></li>
+      </ul>
+    <% end %>
+
+    <% if @email.html_part || @email.text_part || @email.body.present? %>
+      <iframe class="mail_iframe" onload='resizeIframe(this)' style="border-top: none;" src="<%= raw_maily_email_path(mailer: params[:mailer], email: params[:email], locale: params[:locale], part: params[:part]) %>" frameborder="1" width="100%"></iframe>
+    <% end %>
+
+    <% if @email.has_attachments? %>
+      <ul class="mail_attachments">
+        <li>Attachments:</li>
+        <li>
+          <ul>
+            <% @email.attachments.each do |attachment| %>
+              <li>
+                <%= icon 'paperclip' %>
+                <%= link_to attachment.filename, attachment_maily_email_path(mailer: params[:mailer], email: params[:email], attachment: attachment.filename) %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

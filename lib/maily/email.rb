@@ -1,6 +1,6 @@
 module Maily
   class Email
-    attr_accessor :name, :mailer, :arguments, :template_path, :template_name, :description, :with_params
+    attr_accessor :name, :mailer, :arguments, :template_path, :template_name, :description, :with_params, :no_preview
 
     def initialize(name, mailer)
       self.name          = name
@@ -10,6 +10,7 @@ module Maily
       self.template_path = mailer.name
       self.template_name = name
       self.description   = nil
+      self.no_preview    = false
     end
 
     def mailer_klass
@@ -46,7 +47,9 @@ module Maily
       to = from + optional_arguments.size
       passed_by_hook = arguments && arguments.size || 0
 
-      if passed_by_hook < from
+      if self.no_preview 
+        [true, nil]
+      elsif passed_by_hook < from
         [false, "#{name} email requires at least #{from} arguments, passed #{passed_by_hook}"]
       elsif passed_by_hook > to
         [false, "#{name} email requires at the most #{to} arguments, passed #{passed_by_hook}"]
@@ -57,7 +60,6 @@ module Maily
 
     def register_hook(*args)
       args = args.flatten(1)
-
       if args.last.is_a?(Hash)
         self.description = args.last.delete(:description)
 
@@ -69,6 +71,10 @@ module Maily
           self.template_name = tpl_name
         end
 
+        if no_preview = args.last.delete(:no_preview)
+          self.no_preview = no_preview
+        end
+
         self.with_params = args.last.delete(:with_params)
 
         args.pop
@@ -78,6 +84,8 @@ module Maily
     end
 
     def call
+      return nil if self.no_preview
+
       *args = arguments && arguments.map { |arg| arg.respond_to?(:call) ? arg.call : arg }
 
       if args == [nil]

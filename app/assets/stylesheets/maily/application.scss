@@ -81,6 +81,22 @@ footer.footer {
 }
 
 .content {
+  .description-table {
+    font-size: 13px;
+    .mail-summarize {
+      font-size: 14px;
+    }
+    .description-label {
+      font-weight: bold;
+    }
+    .description-value {
+      max-width: 700px;
+    }
+    .mail-notes {
+      color: #888888;
+    }
+  }
+
   margin-right: 2em;
   margin-left: 1em;
   padding-left: 20%;
@@ -139,6 +155,13 @@ footer.footer {
     padding: 1em;
     border: solid 1px $grey;
     border-radius: 3px;
+
+    .no-preview{
+      display: flex;
+      justify-content: left;
+      font-size: 18px;
+      color: #888888;
+    }
 
     .mail_details {
       margin: 0 0 1em 0;

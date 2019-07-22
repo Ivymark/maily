@@ -14,6 +14,8 @@ module Maily
       unless valid
         redirect_to(root_path, alert: message)
       end
+
+      render :template => Maily.show_view_type == 'detailed_description' ?  'maily/emails/detailed_description_show' : 'maily/emails/show'
     end
 
     def raw

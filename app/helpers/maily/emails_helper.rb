@@ -16,5 +16,12 @@ module Maily
     def part_class(part)
       'format_selected' if (part == params[:part]) || (part == 'html' && !params[:part])
     end
+
+    def format_description_value(value)
+      if value.kind_of?(Array)
+        value = value.join(', ')
+      end
+      value.to_s.gsub(/(?:\n\r?|\r\n?)/, '<br>').html_safe
+    end
   end
 end
