@@ -56,7 +56,7 @@ module Maily
     end
 
     def register_hook(*args)
-      args = args.flatten
+      args = args.flatten(1)
 
       if args.last.is_a?(Hash)
         self.description = args.last.delete(:description)
