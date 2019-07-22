@@ -4,6 +4,9 @@
   <title><%= title %></title>
   <%= csrf_meta_tags %>
   <%= stylesheet_link_tag "maily/application", media: "all" %>
+  <% if Maily.stylesheet_path.present? %>
+  <%= stylesheet_link_tag Maily.stylesheet_path, media: "all" %>
+  <% end %>
   <%= render 'maily/shared/javascript' %>
 </head>
 <body>

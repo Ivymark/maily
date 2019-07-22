@@ -7,7 +7,7 @@ require 'maily/generator'
 module Maily
   class << self
     attr_accessor :enabled, :allow_edition, :allow_delivery, :available_locales,
-                  :base_controller, :http_authorization, :hooks_path, :welcome_message
+                  :base_controller, :http_authorization, :hooks_path, :stylesheet_path, :welcome_message
 
     def init!
       self.enabled            = Rails.env.production? ? false : true
@@ -16,6 +16,7 @@ module Maily
       self.available_locales  = Rails.application.config.i18n.available_locales || I18n.available_locales
       self.base_controller    = 'ActionController::Base'
       self.http_authorization = nil
+      self.stylesheet_path    = nil
       self.hooks_path         = "lib/maily_hooks.rb"
       self.welcome_message    = nil
     end

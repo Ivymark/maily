@@ -17,6 +17,9 @@ Maily.setup do |config|
   # Configure hooks path
   # config.hooks_path = 'lib/maily_hooks.rb'
 
+  # Add custome styles
+  # config.stylesheet_path = 'maily_styles'
+
   # Http basic authentication (nil by default)
   # config.http_authorization = { username: 'admin', password: 'secret' }
 

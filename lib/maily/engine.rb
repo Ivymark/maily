@@ -3,10 +3,21 @@ module Maily
     isolate_namespace Maily
     load_generators
 
-    config.assets.precompile << %w(
-      maily/application.css
-      maily/logo.png
-      maily/icons/*.svg
-    )
+    initializer "engine_name.assets.precompile" do |app|
+      app.config.assets.precompile += get_precompile_paths
+    end
+
+    def get_precompile_paths
+      paths = [
+        'maily/application.css',
+        'maily/logo.png',
+        'maily/icons/*.svg'
+      ]
+      if Maily.stylesheet_path.present?
+        paths << Maily.stylesheet_path
+      end
+
+      paths
+    end
   end
 end
