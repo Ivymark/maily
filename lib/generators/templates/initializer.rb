@@ -20,6 +20,21 @@ Maily.setup do |config|
   # Add custome styles
   # config.stylesheet_path = 'maily_styles'
 
+  # Uncomment next line to use 'detailed_description' view instead of the regular view
+  # {
+  #   description: {
+  #     summarize,
+  #     notes,
+  #     no_preview (boolean - show only descrition details, in that case need to add custome details)
+  #     subject (for custome subject)
+  #     from (for custome from)
+  #     reply_to (for custome reply_to)
+  #     ... more custome options (the key name will be the label)
+  #   }
+  # }
+  # config.show_view_type = 'detailed_description'
+
+
   # Http basic authentication (nil by default)
   # config.http_authorization = { username: 'admin', password: 'secret' }
 
