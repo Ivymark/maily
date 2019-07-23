@@ -1,7 +1,7 @@
 <h1><%= @maily_email.name.humanize %></h1>
 <% if @maily_email.description.present? %>
-  <% @summarize = @maily_email.description.delete(:summarize)%>
-  <% @notes = @maily_email.description.delete(:notes)%>
+  <% @summarize = @maily_email.description[:summarize] %>
+  <% @notes = @maily_email.description[:notes] %>
   <table cellpadding="10" class="description-table">
     <% if @summarize.present? %>
       <tr>
@@ -9,7 +9,7 @@
       </tr>
     <% end %>
     <% @maily_email.description.each do |key, value| %>
-      <% if value.present? %>
+      <% if value.present? && !['summarize', 'notes'].include(key) %>
       <tr>
         <td width="150px" style="font-weight: bold;" class="description-label"><%= key.to_s.humanize %></td>
         <td class="description-value"><%= format_description_value(value) %></td>
