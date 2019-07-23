@@ -9,7 +9,7 @@
       </tr>
     <% end %>
     <% @maily_email.description.each do |key, value| %>
-      <% if value.present? && !['summarize', 'notes'].include(key) %>
+      <% if value.present? && !['summarize', 'notes'].include?(key) %>
       <tr>
         <td width="150px" style="font-weight: bold;" class="description-label"><%= key.to_s.humanize %></td>
         <td class="description-value"><%= format_description_value(value) %></td>
