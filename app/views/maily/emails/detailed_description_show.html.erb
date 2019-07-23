@@ -11,7 +11,7 @@
     <% @maily_email.description.each do |key, value| %>
       <% if value.present? && !['summarize', 'notes'].include?(key) %>
       <tr>
-        <td width="150px" style="font-weight: bold;" class="description-label"><%= key.to_s.humanize %></td>
+        <td width="150px" valign="top" style="font-weight: bold;" class="description-label"><%= key.to_s.humanize %></td>
         <td class="description-value"><%= format_description_value(value) %></td>
       </tr>
       <% end %>
@@ -20,7 +20,7 @@
     <% ['subject', 'from', 'reply_to'].each do |fiels_name| %>
       <% if @email.try(fiels_name).present? || @maily_email.description[fiels_name].present?%>
         <tr>
-          <td width="150px" style="font-weight: bold;" class="description-label"><%= fiels_name.to_s.humanize %></td>
+          <td width="150px" valign="top" style="font-weight: bold;" class="description-label"><%= fiels_name.to_s.humanize %></td>
           <td class="description-value"><%= @maily_email.description[fiels_name].present? ? format_description_value(@maily_email.description[fiels_name])  : format_description_value(@email[fiels_name]) %></td>
         </tr>
       <% end %>
